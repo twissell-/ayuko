@@ -1,0 +1,4 @@
+feedparser
+yt-dlp
+scrapetube
+typer[all]
