@@ -23,7 +23,7 @@ Oka comes with two git-like subcommands:
 For the moment, clone and run `oka.sh`. This will create the virtualenv if it doesn't exists.
 
 ```sh
-git@github.com:twissell-/oka.git
+git clone git@github.com:twissell-/oka.git
 cd oka
 ./oka.sh
 ```

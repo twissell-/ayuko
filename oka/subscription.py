@@ -1,4 +1,4 @@
-from typing import List, Literal
+from typing import List
 
 import feedparser
 import scrapetube
@@ -76,7 +76,7 @@ class RssSubscription(Subscription):
 
 def from_config(
     id: str,
-    type: Literal["channel", "rss"],
+    type: str,
     title: str = "",
     includes: List[str] = [],
     excludes: List[str] = [],
