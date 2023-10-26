@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 
 import logging
+import os
+import sys
 from logging.handlers import RotatingFileHandler
 
 import typer
 
 from oka import config, downloader, purger, subscription
 
+oka_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+
 root_logger = logging.getLogger("")
 root_logger.setLevel(logging.DEBUG)
 
-log_handler = RotatingFileHandler("./oka.log", backupCount=3)
+log_handler = RotatingFileHandler(f"{oka_dir}/oka.log", backupCount=3)
 log_handler.setFormatter(
     logging.Formatter(
         "%(asctime)s %(name)s - %(levelname)s - %(message)s",
