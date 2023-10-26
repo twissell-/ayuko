@@ -20,11 +20,11 @@ log_handler.setFormatter(
 root_logger.addHandler(log_handler)
 log_handler.doRollover()
 
-oka = typer.Typer()
+oka = typer.Typer(no_args_is_help=True)
 
 
 @oka.command(
-    help="Searchs torrents for new episodes for each anime in watching list and add them to qBitTorrent."
+    help="Downloads up to `max_downloads` for each subscription in the configuration file"
 )
 def download(
     verbose: bool = typer.Option(False),
@@ -41,7 +41,7 @@ def download(
 
 
 @oka.command(
-    help="Searchs torrents for new episodes for each anime in watching list and add them to qBitTorrent."
+    help="Deletes subscription videos older than `retention` days if the retention is not 0"
 )
 def purge(
     verbose: bool = typer.Option(False),
@@ -58,4 +58,4 @@ def purge(
 
 
 if __name__ == "__main__":
-    oka()
+    oka(prog_name="oka")
