@@ -32,7 +32,7 @@ _YDL_BASE_OPTIONS = {
 
 
 def download(subscription: Subscription):
-    file_template = "%(title)s - %(upload_date>%Y-%m-%d)s [%(id)s].%(ext)s"
+    file_template = "%(upload_date>%Y-%m-%d)s - %(title)s [%(id)s].%(ext)s"
     ydl_opts = _YDL_BASE_OPTIONS.copy()
     ydl_opts["outtmpl"] = path.join(
         config.get("downloader.directory"), subscription.destination, file_template
