@@ -11,15 +11,18 @@ class Downloader:
     pass
 
 
-def _longer_than_a_minute(info, *, incomplete):
-    """Download only videos longer than a minute (or with unknown duration)"""
+def _filter(info, *, incomplete):
+    """Download only videos longer than a minute (or with unknown duration) and skip lives."""
     duration = info.get("duration")
     if duration and duration < 60:
         return "The video is too short"
 
+    if info.get("is_live"):
+        return "The video is live"
+
 
 _YDL_BASE_OPTIONS = {
-    "match_filter": _longer_than_a_minute,
+    "match_filter": _filter,
     # "format": None,
     # "outtmpl": None,
     "concurrent_fragment_downloads": config.get("downloader.concurrent_fragments"),
