@@ -61,8 +61,8 @@ def download(subscription: Subscription):
             }
         ]
     else:
-        ydl_opts["format"] = "wv*[ext=mp4]+ba[ext=m4a]/w[ext=mp4] / wv*+wa/b"
-        # ydl_opts["format"] = "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
+        # ydl_opts["format"] = "wv*[ext=mp4]+ba[ext=m4a]/w[ext=mp4] / wv*+wa/b"
+        ydl_opts["format"] = "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
 
     try:
         if not _download(ydl_opts, subscription.links):
