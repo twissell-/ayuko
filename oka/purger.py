@@ -2,7 +2,7 @@ import os
 import time
 from pathlib import Path
 
-from oka import config
+from oka.common import config
 from oka.subscription import Subscription
 
 
@@ -13,8 +13,8 @@ def purge(subscription: Subscription):
     if not subscription.retention:
         return
 
-    if not subscription.title:
-        print(f"Can't purge subscription without title ({subscription.id}).")
+    if not subscription.destination:
+        print(f"Can't purge subscription without destination ({subscription.url}).")
         return
 
     for item in Path(files_path).glob(f"{subscription.destination}/*"):

@@ -1,15 +1,14 @@
 {
     "downloader": {
         "directory": "",
-        "max_downloads": 1,
         "concurrent_fragments": 4,
         "download_archive": ""
     },
     "subscriptions": [
         {
             "id": "",
-            "title": "",
-            "type": "channel|rss|playlist",
+            "destination": "",
+            "type": "channel|playlist",
             "includes": [],
             "excludes": [],
             "retention": 0

@@ -51,29 +51,28 @@ cp config.template.json config.json
 | Option               | Description                                                                               | Mandatory | Default |
 | -------------------- | ----------------------------------------------------------------------------------------- | :-------: | ------- |
 | directory            | Path to the base directory where the videos will be downloaded                            |    Yes    |         |
-| max_downloads        | Number of videos to be downloaded per subscription on each run                            |    Yes    | `1`     |
-| concurrent_fragments | Number of fragments of a dash/hlsnative video that should be downloaded concurrently      |    Yes    | `4`     |
+| concurrent_fragments | Number of fragments of a dash/hlsnative video that should be downloaded concurrently      |    No     | `4`     |
 | download_archive     | Path to the file where downloaded videos will be recorded to avoid downloading them twice |    Yes    |         |
 
 ### `subscriptions` section
 
 `subscriptions` is a list of objects, each with the following options:
 
-| Option    | Description                                                                                                    | Mandatory | Default           |
-| --------- | -------------------------------------------------------------------------------------------------------------- | :-------: | ----------------- |
-| id        | Either a channel id, a playlist id, or a channel username (@username)                                          |    Yes    |                   |
-| title     | A name to identify the subscriptions. Downloads will be placed on `{downloader.directory}/{substiption.title}` |    No     | The channels name |
-| type      | One of "channel\|rss\|playlist"                                                                                |    Yes    |                   |
-| includes  | List of strings. Download only videos with one of these terms in its title. Case insensitive                   |    No     | `[]`              |
-| excludes  | List of strings. Do not download videos with one of these terms in its title. Case insensitive                 |    No     | `[]`              |
-| retention | Number of days a video should be kept, based on the download date. `0` disables this feature.                  |    No     | `0`               |
+| Option      | Description                                                                                                         | Mandatory | Default |
+| ----------- | ------------------------------------------------------------------------------------------------------------------- | :-------: | ------- |
+| id          | Either a channel id, a playlist id, or a channel username (@username)                                               |    Yes    |         |
+| destination | A name to identify the subscription. Downloads will be placed on `{downloader.directory}/{substiption.destination}` |    Yes    |         |
+| type        | One of "channel\|playlist"                                                                                          |    Yes    |         |
+| includes    | List of strings. Download only videos with one of these terms in its title. Case insensitive                        |    No     | `[]`    |
+| excludes    | List of strings. Do not download videos with one of these terms in its title. Case insensitive                      |    No     | `[]`    |
+| retention   | Number of days a video should be kept, based on the download date. `0` disables this feature.                       |    No     | `0`     |
 
 #### Clarifications
 
-- Channel username can't be used as id for `rss` subscriptions.
 - I strongly recommend setting a title for `playlist` subscriptions. That will cause all videos from that playlist to be downloaded in the same folder instead of each in their respective channel folder.
 - The `channel` type will download videos from the list of all videos of a channel.
-- The `rss` type will download videos from the list of the last 15 uploaded videos of a channel.
+- The `channel` type will download only from the newest 300 videos.
+- If `retention` is not `0`, only videos between `retention` days and now will be downloaded.
 - When using both **filters** `includes` are checked first, then `excludes`, meaning the later will apply only to those titles matching the former. Here's an example:
 
 Given these filters:

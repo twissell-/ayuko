@@ -7,7 +7,8 @@ from logging.handlers import RotatingFileHandler
 
 import typer
 
-from oka import config, downloader, purger, subscription
+from oka import downloader, purger, subscription
+from oka.common import config
 
 oka_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 

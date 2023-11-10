@@ -1,10 +1,13 @@
+import logging
 from os import path
 
 import yt_dlp
 from yt_dlp.YoutubeDL import MaxDownloadsReached
 
-from oka import config
+from oka.common import config
 from oka.subscription import Subscription
+
+logger = logging.getLogger(__name__)
 
 
 class Downloader:
@@ -27,7 +30,7 @@ _YDL_BASE_OPTIONS = {
     # "outtmpl": None,
     "concurrent_fragment_downloads": config.get("downloader.concurrent_fragments"),
     "download_archive": config.get("downloader.download_archive"),
-    "max_downloads": config.get("downloader.max_downloads"),
+    "max_downloads": 1,
     "quiet": True,
     "no_warnings": True,
     # "simulate": True,
@@ -35,13 +38,20 @@ _YDL_BASE_OPTIONS = {
 
 
 def download(subscription: Subscription):
+    episode = subscription.last_episode + 1
     file_template = (
-        f"{subscription.title} - %(upload_date>%Y-%m-%d)s - %(title)s [%(id)s].%(ext)s"
+        f"{subscription.destination} - {episode} - %(title)s [%(id)s].%(ext)s"
     )
     ydl_opts = _YDL_BASE_OPTIONS.copy()
+
     ydl_opts["outtmpl"] = path.join(
         config.get("downloader.directory"), subscription.destination, file_template
     )
+
+    if subscription.retention:
+        ydl_opts["daterange"] = yt_dlp.utils.DateRange(
+            f"today-{subscription.retention}day"
+        )
 
     if subscription.audio_only:
         ydl_opts["postprocessors"] = [
@@ -51,13 +61,18 @@ def download(subscription: Subscription):
             }
         ]
     else:
-        ydl_opts["format"] = "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
+        ydl_opts["format"] = "wv*[ext=mp4]+ba[ext=m4a]/w[ext=mp4] / wv*+wa/b"
+        # ydl_opts["format"] = "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
 
     try:
-        if _download(ydl_opts, subscription.links):
-            print(f"Error downloading from {subscription.url}")
+        if not _download(ydl_opts, subscription.links):
+            subscription.last_episode = episode
+        else:
+            logger.info(f"Error downloading from {subscription.url}")
+
     except MaxDownloadsReached:
-        print(f"Max downloads reached for {subscription.title}")
+        subscription.last_episode = episode
+        logger.info(f"Max downloads reached for {subscription.url}")
 
 
 def _download(ydl_options: dict, links: list):
