@@ -65,9 +65,7 @@ def download(subscription: Subscription):
         ydl_opts["format"] = "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b"
 
     try:
-        if not _download(ydl_opts, subscription.links):
-            subscription.last_episode = episode
-        else:
+        if _download(ydl_opts, subscription.links):
             logger.info(f"Error downloading from {subscription.url}")
 
     except MaxDownloadsReached:
