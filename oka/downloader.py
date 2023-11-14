@@ -5,7 +5,7 @@ import yt_dlp
 from yt_dlp.YoutubeDL import MaxDownloadsReached
 
 from oka.common import config
-from oka.subscription import Subscription
+from oka.subscription import PlaylistSubscription, Subscription
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +52,9 @@ def download(subscription: Subscription):
         ydl_opts["daterange"] = yt_dlp.utils.DateRange(
             f"today-{subscription.retention}day"
         )
+
+    if subscription.reverse_order:
+        ydl_opts["playlistreverse"] = subscription.reverse_order
 
     if subscription.audio_only:
         ydl_opts["postprocessors"] = [

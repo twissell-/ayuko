@@ -58,14 +58,16 @@ cp config.template.json config.json
 
 `subscriptions` is a list of objects, each with the following options:
 
-| Option      | Description                                                                                                         | Mandatory | Default |
-| ----------- | ------------------------------------------------------------------------------------------------------------------- | :-------: | ------- |
-| id          | Either a channel id, a playlist id, or a channel username (@username)                                               |    Yes    |         |
-| destination | A name to identify the subscription. Downloads will be placed on `{downloader.directory}/{substiption.destination}` |    Yes    |         |
-| type        | One of "channel\|playlist"                                                                                          |    Yes    |         |
-| includes    | List of strings. Download only videos with one of these terms in its title. Case insensitive                        |    No     | `[]`    |
-| excludes    | List of strings. Do not download videos with one of these terms in its title. Case insensitive                      |    No     | `[]`    |
-| retention   | Number of days a video should be kept, based on the download date. `0` disables this feature.                       |    No     | `0`     |
+| Option        | Description                                                                                                         | Mandatory | Default |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- | :-------: | ------- |
+| id            | Either a channel id, a playlist id, or a channel username (@username)                                               |    Yes    |         |
+| destination   | A name to identify the subscription. Downloads will be placed on `{downloader.directory}/{substiption.destination}` |    Yes    |         |
+| type          | One of "channel\|playlist"                                                                                          |    Yes    |         |
+| includes      | List of strings. Download only videos with one of these terms in its title. Case insensitive                        |    No     | `[]`    |
+| excludes      | List of strings. Do not download videos with one of these terms in its title. Case insensitive                      |    No     | `[]`    |
+| retention     | Number of days a video should be kept, based on the download date. `0` disables this feature.                       |    No     | `0`     |
+| audio_only    | If `true`, converts the downloaded video to audio.                                                                  |    No     | `false` |
+| reverse_order | Playlist type only. If `true`, downloads the playlist videos starting from the last (higher index) one.             |    No     | `false` |
 
 #### Clarifications
 

@@ -28,6 +28,7 @@ class Subscription:
         self.excludes = excludes
         self.retention = retention
         self.audio_only = audio_only
+        self.reverse_order = False
 
     @property
     def links(self):
@@ -87,17 +88,22 @@ class ChannelSubscription(Subscription):
 
 
 class PlaylistSubscription(Subscription):
+    def __init__(
+        self,
+        url: str,
+        destination: str = "",
+        includes: List = [],
+        excludes: List = [],
+        retention: int = 0,
+        audio_only: bool = False,
+        reverse_order: bool = False,
+    ):
+        super().__init__(url, destination, includes, excludes, retention, audio_only)
+        self.reverse_order = reverse_order
+
     @property
     def links(self) -> List[str]:
-        links = [
-            v["videoId"]
-            for v in scrapetube.get_playlist(playlist_id=self.url)
-            if self._filter(v)
-        ]
-
-        links.reverse()
-
-        return links
+        return self.url
 
 
 def from_config(
@@ -108,6 +114,7 @@ def from_config(
     excludes: List[str] = [],
     retention: int = 0,
     audio_only: bool = False,
+    reverse_order: bool = False,
 ) -> Subscription:
     if type == "channel":
         if id[0] == "@":
@@ -131,6 +138,7 @@ def from_config(
             excludes=excludes,
             retention=retention,
             audio_only=audio_only,
+            reverse_order=reverse_order,
         )
     else:
         raise ValueError(f"Invalid value for {type} subscription: {id}")
