@@ -89,11 +89,15 @@ class ChannelSubscription(Subscription):
 class PlaylistSubscription(Subscription):
     @property
     def links(self) -> List[str]:
-        return [
+        links = [
             v["videoId"]
             for v in scrapetube.get_playlist(playlist_id=self.url)
             if self._filter(v)
         ]
+
+        links.reverse()
+
+        return links
 
 
 def from_config(
